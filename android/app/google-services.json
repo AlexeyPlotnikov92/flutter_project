@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "334105176793",
+    "project_id": "projectodo-b4915",
+    "storage_bucket": "projectodo-b4915.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:334105176793:android:b529584dd85ca374462cc8",
+        "android_client_info": {
+          "package_name": "com.testflutter.flutter_test_project"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "334105176793-s3tpbkejlgogfb1b3r4f0umvut7bc489.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCzh9E3x50GTbhC5JzOtvmAKV-eEesjmSs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "334105176793-s3tpbkejlgogfb1b3r4f0umvut7bc489.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
