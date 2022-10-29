@@ -168,6 +168,14 @@ class _HomeState extends State<Home> {
     return formattedDate;
   }
 
+  Color todoColor(String dateTime) {
+    DateTime itemDate = DateTime.parse(dateTime);
+    if (DateTime.now().isAfter(itemDate)) {
+      return Colors.redAccent;
+    }
+    return Colors.greenAccent;
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -199,6 +207,7 @@ class _HomeState extends State<Home> {
                 key: Key(snapshot.data!.docs[index].id),
                 child: Card(
                   child: ListTile(
+                    tileColor: todoColor(showText(snapshot.data!.docs[index].get('time'))),
                     title: Text(snapshot.data!.docs[index].get('name') +
                         ' ' +
                         showText(snapshot.data!.docs[index].get('time'))),
