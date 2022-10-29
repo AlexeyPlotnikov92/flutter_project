@@ -327,7 +327,7 @@ class _HomeState extends State<Home> {
               builder: (BuildContext context) {
                 return AlertDialog(
                   title: TextField(
-                    controller: inputController,
+                    controller: inputController..text = showText(Timestamp.now()),
                     decoration: InputDecoration(
                         labelText: 'Date', icon: Icon(Icons.calendar_today)),
                     readOnly: true,
