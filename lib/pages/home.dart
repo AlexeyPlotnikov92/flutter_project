@@ -24,7 +24,8 @@ class _HomeState extends State<Home> {
   MyTask task = MyTask(name: '', time: DateTime.now(), description: '');
   List todoList = [];
   TextEditingController inputController = TextEditingController();
-  TextEditingController editingController = TextEditingController();
+  TextEditingController editingDateController = TextEditingController();
+  TextEditingController editingNameController = TextEditingController();
 
   @override
   void initState() {
@@ -167,60 +168,6 @@ class _HomeState extends State<Home> {
     return formattedDate;
   }
 
-  void editItem() {
-    showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: TextField(
-              controller: editingController,
-              decoration: InputDecoration(
-                  labelText: 'Date', icon: Icon(Icons.calendar_today)),
-              readOnly: true,
-              onTap: () async {
-                DateTime? pickedDate = await showDatePicker(
-                    context: context,
-                    initialDate: DateTime.now(),
-                    firstDate: DateTime(2020),
-                    //DateTime.now() - not to allow to choose before today.
-                    lastDate: DateTime(2024));
-                if (pickedDate != null) {
-                  print(pickedDate);
-                  String formattedDate =
-                  DateFormat('yyyy-MM-dd').format(pickedDate);
-                  print(formattedDate);
-                  task.time = pickedDate;
-
-                  setState(() {
-                    inputController.text =
-                        formattedDate; //set output date to TextField value.
-                  });
-                } else {
-                  print("Date is not selected");
-                }
-              },
-            ),
-            content: TextField(
-              onChanged: (String tName) {
-                task.name = tName;
-              },
-              decoration: InputDecoration(labelText: 'Name'),
-            ),
-            actions: [
-              ElevatedButton(
-                  onPressed: () {
-                    FirebaseFirestore.instance.collection('tasks').add({
-                      'name': task.name,
-                      'time': task.time,
-                      'desc': task.description
-                    });
-                    Navigator.of(context).pop();
-                  },
-                  child: Text('добавить'))
-            ],
-          );
-        });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -288,7 +235,7 @@ class _HomeState extends State<Home> {
                                   builder: (BuildContext context) {
                                     return AlertDialog(
                                       title: TextField(
-                                        controller: editingController,
+                                        controller: editingDateController..text = showText(snapshot.data!.docs[index].get('time')),
                                         decoration: InputDecoration(
                                             labelText: 'Date', icon: Icon(Icons.calendar_today)),
                                         readOnly: true,
@@ -307,8 +254,8 @@ class _HomeState extends State<Home> {
                                             task.time = pickedDate;
 
                                             setState(() {
-                                              inputController.text =
-                                                  formattedDate; //set output date to TextField value.
+                                              editingDateController.text =
+                                                  formattedDate;
                                             });
                                           } else {
                                             print("Date is not selected");
@@ -316,9 +263,15 @@ class _HomeState extends State<Home> {
                                         },
                                       ),
                                       content: TextField(
+                                        controller: editingNameController..text = snapshot.data!.docs[index].get('name'),
                                         onChanged: (String tName) {
-                                          task.name = tName;
-                                        },
+                                            if (tName.isEmpty || tName == null) {
+                                              task.name = snapshot.data!.docs[index].get('name');
+                                            }
+                                            else {
+                                              task.name = tName;
+                                            }
+                                          },
                                         decoration: InputDecoration(labelText: 'Name'),
                                       ),
                                       actions: [
@@ -334,7 +287,7 @@ class _HomeState extends State<Home> {
                                               });
                                               Navigator.of(context).pop();
                                             },
-                                            child: Text('добавить'))
+                                            child: Text('изменить'))
                                       ],
                                     );
                                   });
